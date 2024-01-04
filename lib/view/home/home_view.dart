@@ -43,6 +43,7 @@ class HomeView extends ConsumerWidget {
         backgroundColor: Colors.blueGrey,
         onPressed: () async {
           final TimeOfDay? value = await selectTime(context);
+
           if (value != null) {
             ref.read(homeViewModelProvider.notifier).setAlarm(
                 hour: value.hour, minute: value.minute, context: context);

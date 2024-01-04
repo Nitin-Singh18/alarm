@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:alarm_app/const/const.dart';
 import 'package:alarm_app/view/full_screen_notification_view.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
-import 'package:alarm_app/services/notifications_services.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final homeViewModelProvider =
@@ -18,10 +18,17 @@ class HomeViewModel extends StateNotifier<DateTime?> {
         currentTime.year, currentTime.month, currentTime.day, hour, minute);
     print(alarmTime);
     updateAlarmTime(alarmTime);
-    // NotificationServices notificationServices = NotificationServices();
-    // notificationServices.initializeNotifications(context);
-    await AndroidAlarmManager.oneShotAt(alarmTime, 0, fireAlarm,
-        alarmClock: true, wakeup: true);
+    await callNativeSetAlarm(hour, minute);
+  }
+
+  Future<void> callNativeSetAlarm(int hours, int minutes) async {
+    try {
+      final String? value = await channel
+          .invokeMethod('setTime', {'hours': hours, 'minutes': minutes});
+      print(value);
+    } on PlatformException catch (e) {
+      print("Error : $e");
+    }
   }
 
   void updateAlarmTime(DateTime alarmTime) {
@@ -29,10 +36,4 @@ class HomeViewModel extends StateNotifier<DateTime?> {
   }
 }
 
-@pragma('vm:entry-point')
-void fireAlarm() {
-  print('Alarm ');
-  NotificationServices notificationServices = NotificationServices();
-
-  notificationServices.alarmNotification('Alarm', 'Ringing');
-}
+const MethodChannel channel = MethodChannel("alarm_channel");

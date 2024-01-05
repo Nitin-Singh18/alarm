@@ -40,7 +40,9 @@
             android:value="2" />
         <activity
             android:name=".FullScreenActivity"
-            android:showOnLockScreen="true" />
+            android:showOnLockScreen="true"
+            android:theme="@style/NormalTheme"
+            />
 
         <receiver android:name=".AlarmReceiver" />
         <receiver android:name=".CancelNotificationReceiver" />

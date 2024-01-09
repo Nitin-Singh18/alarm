@@ -8,11 +8,16 @@ import java.time.LocalDateTime
 
 class MainActivity : FlutterActivity() {
     private val channel = "alarm_channel"
-
+    private val qrChannel = "qr_channel"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         val scheduler = AndroidAlarmScheduler(context = this)
         super.configureFlutterEngine(flutterEngine)
+        //to launch specific flutter screen
+        val navigateTo = intent.getBooleanExtra("navigateTo", false)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, qrChannel).invokeMethod(
+            "navigateTo", navigateTo,
+        )
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channel)
             .setMethodCallHandler { call, result ->
                 if (call.method == "setTime") {
@@ -29,7 +34,7 @@ class MainActivity : FlutterActivity() {
                         )
                         print(alarmTime)
                         scheduler.schedule(alarmTime)
-                        result.success("1Success $hours $minutes")
+                        result.success("Success $hours $minutes")
                     }
 
                 } else {

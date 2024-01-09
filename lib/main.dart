@@ -1,6 +1,8 @@
-import 'package:alarm_app/view/home/home_view.dart';
+import 'package:alarm_app/view/home/view/home_view.dart';
+import 'package:alarm_app/view/qr/view/qr_scanner_view.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
@@ -9,6 +11,8 @@ void main() async {
   await AndroidAlarmManager.initialize();
   runApp(const ProviderScope(child: MyApp()));
 }
+
+const MethodChannel qrChannel = MethodChannel('qr_channel');
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
